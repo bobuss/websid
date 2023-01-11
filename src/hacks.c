@@ -58,6 +58,24 @@ static void patchUtopia6IfNeeded(uint16_t init_addr) {
 		memWriteRAM(0x8E49, 0x0);
 	}
 }
+/*
+* Mr_Meaner.sid: NMI/IRQ handling issue
+*/
+static void patchMrMeanerIfNeeded(uint16_t init_addr) {
+	// timing critical song with extremely slow NMI digi player: with a 9kHz-10kHz digi sample rate, the 
+	// up to ~100 cycles used by its NMI routine are very close to the maximum cycles actually available
+	// between NMIs. The song has the display turned on and probably the original timing actually manages 
+	// to navigate around the badlines.
+	// But the emulator eventually ends up in a state where the INT-flag is no longer cleared - leading
+	// to IRQs no longer being triggered. There still must be some flaw in WebSid's badline impl or a 
+	// flaw in some border case for some simultaneous NMI and IRQ scenario. The problem does not appear 
+	// while the badline handling is disabled.
+
+	uint8_t pattern[] = {0xad, 0x0e, 0xdd, 0xad, 0xd9, 0x16, 0x8d, 0xd6, 0x16};
+	if ((init_addr == 0x1000) && memMatch(0x157c, pattern, 9)) {
+		vicSetStunImpl(&disabledStun);
+	}
+}
 
 
 /*
@@ -295,6 +313,8 @@ static void patch4NonBlondesIfNeeded(uint16_t init_addr) {
 void hackIfNeeded(uint16_t init_addr) {
 
 	cpuHackNMI(0);	// disable incorrect NMI behavior
+	
+	patchMrMeanerIfNeeded(init_addr);
 	
 	patchFeelingGoodIfNeeded(init_addr);
 
