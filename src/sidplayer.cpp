@@ -417,7 +417,7 @@ extern "C" uint8_t EMSCRIPTEN_KEEPALIVE envSetNTSC(uint8_t is_ntsc) {
 inline void applyStereoEnhance() {
 	uint32_t s;
 	if((_effect_level > 0) && (s = LVCS_Process(_lvcs_handle, (const LVM_INT16*)_synth_buffer, _synth_buffer, _chunk_size))) {
-		fprintf(stderr, "error: LVCS_Process %lu %hu\n", s, _chunk_size);
+		fprintf(stderr, "error: LVCS_Process %u %hu\n", s, _chunk_size);
 	}
 }
 
@@ -549,7 +549,7 @@ LVM_Fs_en getSampleRateEn(uint32_t sample_rate) {
 		case 48000:
 			return LVM_FS_48000;
 		default:
-			fprintf(stderr, "warning: samplerate (%lu) is not supported by pseudo stereo impl.", sample_rate);
+			fprintf(stderr, "warning: samplerate (%u) is not supported by pseudo stereo impl.", sample_rate);
 			return LVM_FS_DUMMY;	// higher sample rates should not be used here
 
 	}
@@ -557,7 +557,7 @@ LVM_Fs_en getSampleRateEn(uint32_t sample_rate) {
 
 void configurePseudoStereo() {
 	if (!_chunk_size) return;
-	
+
 	if (_lvcs_handle == LVM_NULL) {
 		// capabilities used for LVCS_Memory and LVCS_Init must be the same!
 		_lvcs_caps.MaxBlockSize= _chunk_size;
@@ -570,7 +570,7 @@ void configurePseudoStereo() {
 		if (LVCS_Init(&_lvcs_handle, &_lvcs_mem_tab, &_lvcs_caps)) {
 			fprintf(stderr, "error: LVCS_Init\n");
 		}
-		
+
 	//	fprintf(stderr, "alloc stereo for size %d\n", _chunk_size);
 	}
 
@@ -586,7 +586,7 @@ void configurePseudoStereo() {
 
 	_lvcs_params.EffectLevel    = _effect_level < 0 ? 0 : _effect_level;
 	_lvcs_params.ReverbLevel    = _reverb_level; // supposedly in %!
-						
+
 	_lvcs_params.SpeakerType = _speaker_type;
 
 	_lvcs_params.SourceFormat = LVCS_STEREO;		// with "per voice panning" input signal is "always" stereo
