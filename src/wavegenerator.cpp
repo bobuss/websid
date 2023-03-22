@@ -356,8 +356,10 @@ uint16_t WaveGenerator::noiseOutput() {
 	// just evaluate the respective oversampling data here..
 
 	_noiseout_sum += (SYS_CYCLES() - _ref1_ts) * (uint32_t)_noiseout; // fill remainder of the sample interval
-
-	uint16_t result = _noiseout_sum / (SYS_CYCLES() - _ref0_ts);
+	uint16_t result = _noiseout_sum;
+	if (SYS_CYCLES() != _ref0_ts) {
+		result = _noiseout_sum / (SYS_CYCLES() - _ref0_ts);
+	}
 	SAMPLE_END();
 	return result;
 }
@@ -832,7 +834,7 @@ void WaveGenerator::setWave(const uint8_t new_ctrl) {
 void WaveGenerator::setPulseWidthLow(const uint8_t val) {
 	_pulse_width = (_pulse_width & 0x0f00) | val;
 	_pulse_width12 = ((uint32_t)_pulse_width) << 12;	// for direct comparisons with 24-bit osc accumulator
-	
+
 #ifdef USE_HERMIT_ANTIALIAS
 	// 16 MSB pulse needed (input is 12-bit)
 	_pulse_out = (uint32_t)(_pulse_width * SCALE_12_16);

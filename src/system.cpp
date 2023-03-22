@@ -1,10 +1,10 @@
 /*
 * System level emulation stuff.
 *
-* WebSid (c) 2020 Jürgen Wothke
+* WebSid (c) 2020 JÃ¼rgen Wothke
 * version 0.94
 *
-* Terms of Use: This software is licensed under a CC BY-NC-SA 
+* Terms of Use: This software is licensed under a CC BY-NC-SA
 * (http://creativecommons.org/licenses/by-nc-sa/4.0/).
 */
 
@@ -42,7 +42,7 @@ extern "C" uint32_t sysCycles() {
 
 extern "C" uint8_t sysClockTimeout() {
 	cpuClock();
-	
+
 	if (sysCycles() >= CYCLELIMIT ) {
 #ifdef EMSCRIPTEN
 		EM_ASM_({ console.log('ERROR: PSID INIT hangs');});	// less mem than inclusion of fprintf
@@ -52,10 +52,10 @@ extern "C" uint8_t sysClockTimeout() {
 		return 0;
 	}
 	// this is probably overkill for PSID crap..
-	vicClock(); 
-	ciaClock(); 
+	vicClock();
+	ciaClock();
 	SID::clockAll();
-	
+
 	_cycles += 1;
 	return 1;
 }
@@ -64,10 +64,10 @@ extern "C" void sysClockOpt() {
 	vicClock();
 	ciaClock();
 	if (SID::isAudible()) {
-		SID::clockAll(); 
+		SID::clockAll();
 	}
 	cpuClock();
-	
+
 	_cycles += 1;
 }
 
@@ -75,15 +75,15 @@ extern "C" void sysClock() {
 	vicClock();
 	ciaClock();
 	SID::clockAll();
-	cpuClock();	
-	
+	cpuClock();
+
 	_cycles += 1;
 }
 
 extern "C" uint32_t sysGetClockRate(uint8_t is_ntsc) {
 	// note: on the real HW the system clock originates from
 	// VIC chip (see comments in vic.c)
-	
+
 	if(is_ntsc) {
 		return 1022727;	// NTSC system clock (14.31818MHz/14)
 	} else {
@@ -94,7 +94,7 @@ extern "C" uint32_t sysGetClockRate(uint8_t is_ntsc) {
 #ifdef TEST
 extern "C" uint8_t sysClockTest() {
 	sysClock();
-	
+
 	return cpuIsValidPcPSID();
 }
 #endif

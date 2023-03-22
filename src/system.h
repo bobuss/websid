@@ -1,13 +1,13 @@
 /*
 * System level emulation stuff.
-* 
-* WebSid (c) 2020 Jürgen Wothke
+*
+* WebSid (c) 2020 JÃ¼rgen Wothke
 * version 0.94
-* 
-* Terms of Use: This software is licensed under a CC BY-NC-SA 
+*
+* Terms of Use: This software is licensed under a CC BY-NC-SA
 * (http://creativecommons.org/licenses/by-nc-sa/4.0/).
 */
- 
+
 #ifndef WEBSID_SYS_H
 #define WEBSID_SYS_H
 
@@ -39,9 +39,9 @@ extern uint32_t _cycles; 	// MUST NOT BE USED DIRECTLY
 	_cycles
 
 #else
-	
+
 #define SYS_CYCLES() \
 	sysCycles()
-#endif	
-	
+#endif
+
 #endif

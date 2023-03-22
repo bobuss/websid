@@ -427,6 +427,7 @@ inline void applyStereoEnhance() {
 
 extern "C" int32_t computeAudioSamples()  __attribute__((noinline));
 extern "C" int32_t EMSCRIPTEN_KEEPALIVE computeAudioSamples() {
+
 	if(!_ready_to_play) return 0;
 
 	uint8_t is_simple_sid_mode =	!FileLoader::isExtendedSidFile();
