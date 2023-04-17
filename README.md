@@ -28,6 +28,8 @@ A special application for using the emulator with a real SID chip on a Raspberry
 ## Changes from Jürgen Wothke
 ./emscripted.sh generates a `htdocs/sid.js` useable within an AudioWorklet (see https://github.com/bobuss/LegacyPlayer)
 
+## Changes from Bertrand Tornil
+`./makeEmscripten.sh` generates an audioWorklet compatible js file `htdocs/sid.js`, useable with [LegacyPlayer](https://github.com/bobuss/LegacyPlayer).
 
 ## Credits
 
